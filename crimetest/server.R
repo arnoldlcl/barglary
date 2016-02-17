@@ -27,8 +27,7 @@ shinyServer(function(input, output) {
   # adds markers if any offense is checked
   markersInput <- reactive({
     if (is.null(input$offense) | is.null(input$day_of_week)) return(leafletInput()) 
-    leafletInput() %>% addMarkers(data = dataInput(),
-                                  clusterOptions = markerClusterOptions())
+    leafletInput() %>% addMarkers(data = dataInput())
                                  
   })
   
