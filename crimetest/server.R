@@ -27,6 +27,12 @@ shinyServer(function(input, output) {
   
   # reads in subsets of the crime data
   crimeInput <- reactive({
+    if (input$min_hour <= input$max_hour) {
+      crime15 <- filter(crime15, Occurren_3 >= input$min_hour & Occurren_3 <= input$max_hour)
+    }
+    else {
+      crime15 <- filter(crime15, Occurren_3 >= input$min_hour | Occurren_3 <= input$max_hour)
+    }
     crime_density <- filter(crime15, Offense %in% input$offense, Day.of.Wee %in% input$day_of_week,
                                      Occurrence_Date %in% input$date) %>%
                      group_by(NTACode) %>%
