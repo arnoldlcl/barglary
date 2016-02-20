@@ -20,9 +20,6 @@ nynta <- spTransform(nynta, CRS("+proj=longlat +datum=WGS84")) # transform lat/l
 pop_nta <- read.csv("../data/New_York_City_Population_by_Neighborhood_Tabulation_Areas.csv")
 pop_nta <- filter(pop_nta, Year == 2010, Population != 0)
 
-nyc_bars <- as.data.frame(nyc_bars_nynta) # convert into a normal data.frame
-crime15 <- as.data.frame(crime15_nynta) # convert into a normal data.frame
-
 # compute # of bars per 1000 population per NTA
 bar_density <- group_by(nyc_bars, NTACode) %>% 
                summarize(num_bars = n()) %>% 
