@@ -7,13 +7,10 @@ library(rgdal)
 # NYC bars and NYC crime data have been modified using QGIS
 # so that each row has a corresponding Neighorhood Tabulation Area
 
-# read in NYC bars as a SpatialPointsDataFrame
-nyc_bars_nynta <- readOGR(dsn = "nyc_bars_nynta", layer = "nyc_bars_nynta")
-nyc_bars_nynta <- spTransform(nyc_bars_nynta, CRS("+proj=longlat +datum=WGS84")) # transform lat/lng for leaflet
-
-# read in NYC 2015 Felony Crimes as a SpatialPointsDataFrame
-crime15_nynta <- readOGR(dsn = "crime15_nynta", layer = "crime15_nynta")
-crime15_nynta <- spTransform(crime15_nynta, CRS("+proj=longlat +datum=WGS84")) # transform lat/lng for leaflet
+# nyc_bars_nta.csv and crime15_nta.csv are data.frames converted from a SpatialPointsDataFrame I manipulated in QGIS
+# I previously read the shapefiles directly into R but they're too large for GitHub
+nyc_bars <- read.csv("nyc_bars_nta.csv")
+crime15 <- read.csv("crime15_nta.csv")
 
 # NYC Neighborhood Tabulation Areas read as SpatialPolygonsDataFrame
 nynta <- readOGR(dsn = "../data/nynta_15d", layer = "nynta_projected") 
