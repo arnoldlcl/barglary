@@ -5,6 +5,7 @@ shinyUI(fluidPage(
   
   sidebarLayout(
     sidebarPanel(
+      helpText("Note: Rape offenses are geocoded as occurring in the precinct in which the incident was recorded."),
       # widget for offenses
       checkboxGroupInput("offense", label = "Offense",
                          choices = c("BURGLARY", "FELONY ASSAULT", "GRAND LARCENY",
@@ -12,7 +13,7 @@ shinyUI(fluidPage(
                                      "RAPE", "ROBBERY"),
                          selected = c("BURGLARY", "FELONY ASSAULT", "GRAND LARCENY",
                                       "GRAND LARCENY OF MOTOR VEHICLE", "MURDER",
-                                      "RAPE", "ROBBERY")),
+                                      "ROBBERY")),
       # widgets for hours
       sliderInput("min_hour", label = "From this hour:",
                   min = 0, max = 23, value = 0, step = 1),
@@ -31,6 +32,8 @@ shinyUI(fluidPage(
                                       "Thursday", "Friday", "Saturday"))
     ),
     
-    mainPanel(leafletOutput("map"))
+    mainPanel(
+      textOutput("map_guidelines"),
+      leafletOutput("map"))
   )
 ))

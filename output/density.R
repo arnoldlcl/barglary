@@ -55,4 +55,5 @@ leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
 # choropleth map of crime density per 1K, equal quantiles (7 divisions), superimposed onto street basemap
 pal_crime <- colorQuantile(palette = "Reds", domain = nynta_crime$crime_density_per_1K, n = 7)
 leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
-              addPolygons(data = nynta_crime, weight = 2, fillOpacity = 0.7, color = ~pal_crime(crime_density_per_1K))
+              addPolygons(data = nynta_crime, weight = 2, fillOpacity = 0.7, color = ~pal_crime(crime_density_per_1K),
+                          popup = nynta_crime$NTAName)
