@@ -20,9 +20,6 @@ nynta <- spTransform(nynta, CRS("+proj=longlat +datum=WGS84")) # transform lat/l
 pop_nta <- read.csv("../data/New_York_City_Population_by_Neighborhood_Tabulation_Areas.csv")
 pop_nta <- filter(pop_nta, Year == 2010, Population != 0)
 
-nyc_bars <- as.data.frame(nyc_bars_nynta) # convert into a normal data.frame
-crime15 <- as.data.frame(crime15_nynta) # convert into a normal data.frame
-
 # compute # of bars per 1000 population per NTA
 bar_density <- group_by(nyc_bars, NTACode) %>% 
                summarize(num_bars = n()) %>% 
@@ -58,4 +55,5 @@ leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
 # choropleth map of crime density per 1K, equal quantiles (7 divisions), superimposed onto street basemap
 pal_crime <- colorQuantile(palette = "Reds", domain = nynta_crime$crime_density_per_1K, n = 7)
 leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
-              addPolygons(data = nynta_crime, weight = 2, fillOpacity = 0.7, color = ~pal_crime(crime_density_per_1K))
+              addPolygons(data = nynta_crime, weight = 2, fillOpacity = 0.7, color = ~pal_crime(crime_density_per_1K),
+                          popup = nynta_crime$NTAName)
