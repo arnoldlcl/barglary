@@ -5,6 +5,7 @@ library(dplyr)
 library(sp)
 library(rgdal)
 
+<<<<<<< HEAD
 # Crime data
 crime15 <- read.csv("C:/Users/Administrator/Documents/GitHub/project2-group7/output/crime15_nta.csv")
 crime15 <- tbl_df(crime15)
@@ -19,6 +20,11 @@ nynta <- spTransform(nynta, CRS("+proj=longlat +datum=WGS84")) # transform lat/l
 # Population data per NTA read as .csv file
 pop_nta <- read.csv("C:/Users/Administrator/Documents/GitHub/project2-group7/data/New_York_City_Population_by_Neighborhood_Tabulation_Areas.csv")
 pop_nta <- filter(pop_nta, Year == 2010, Population >= 10000)
+=======
+load("crime15.RData")
+load("nynta.RData")
+load("pop_nta.RData")
+>>>>>>> origin/master
 
 shinyServer(function(input, output) {
   
