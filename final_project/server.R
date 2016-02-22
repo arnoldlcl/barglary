@@ -21,6 +21,7 @@ load("crime15.RData")
 load("nynta.RData")
 load("pop_nta.RData")
 load("nyc_bars_clean.RData")
+load("nynta_bar.RData")
 
 nyc_bars<-as.data.frame(nyc_bars)
 nyc_bars$Doing.Busi<-as.character(nyc_bars$Doing.Busi)
@@ -30,6 +31,7 @@ shinyServer(function(input, output) {
   
   barsnta<-reactive({filter(nyc_bars,nyc_bars$NTAName==toupper(input$nta))})
   bar<-reactive({filter(nyc_bars,nyc_bars$Doing.Busi==toupper(input$bar))})
+  
   
   # subsets the crime data depending on user input in the Shiny app
   crimeInput <- reactive({
@@ -63,7 +65,7 @@ shinyServer(function(input, output) {
   # draws the basic map
   leafletInput <- reactive({
     leaflet() %>% addProviderTiles("CartoDB.DarkMatter") %>%
-      setView(lat = 40.71196, lng = -73.96483, zoom = 11)
+      setView(lat=40.69196, lng = -73.96483, zoom = 10)
   })
   
   # adds colors (except if no offenses or days of the week are checked, then just display the basemap)
@@ -83,6 +85,16 @@ shinyServer(function(input, output) {
   output$general <- renderLeaflet({
     choroplethInput()
   })
+  
+  # choropleth map of bar density per 1K, equal quantiles (7 divisions), superimposed onto street basemap
+  output$density <- renderLeaflet({
+    pal_bar <- colorQuantile(palette = "Purples", domain = nynta_bar$bar_density_per_1K, n = 7)
+    leaflet() %>%setView(lat=40.69196, lng = -73.96483, zoom = 10)%>%
+              addProviderTiles("CartoDB.Positron") %>% 
+              addPolygons(data = nynta_bar, weight = 2, fillOpacity = 0.7, color = ~pal_bar(bar_density_per_1K))
+  })
+  
+  
 
   
   output$map<- renderGvis({   

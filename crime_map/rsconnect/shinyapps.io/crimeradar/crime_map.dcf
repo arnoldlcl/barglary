@@ -1,0 +1,7 @@
+name: crime_map
+account: crimeradar
+server: shinyapps.io
+appId: 84618
+bundleId: 377256
+url: https://crimeradar.shinyapps.io/crime_map/
+when: 1456108422.39996

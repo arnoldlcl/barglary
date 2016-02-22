@@ -16,9 +16,15 @@ shinyUI(fluidPage(
                     "))
     ),
   
-  titlePanel(HTML("<style>h1{font-family: 'Lobster', cursive;
+  titlePanel(fluidRow(column(4,HTML("<style>h1{font-family: 'Lobster', cursive;
                 font-weight: 500; line-height: 1.1; 
-                  color: #4d3a7d;}</style><h1><img src='logo.png' width='100' height='100'>  Crime Radar</h1>")
+                  color: #4d3a7d;}</style><h1><img src='logo.png' width='100' height='100'>  Crime Radar</h1>")),
+                      column(8,h3("BREAKING NEWS: ", span(" One killed, two wounded in shooting near Penn Station, witnesses say dispute started in McDonald's known as a junkie hangout.", style = "font-weight: 300"), 
+                                  style = "font-family: 'Arial Black';
+                                  color: #fff; text-align: center;
+                                  background-image: url('texturebg.png');
+                                  padding: 20px"))
+                      )
             ),
 
   sidebarLayout(#position = "right",
@@ -60,9 +66,13 @@ shinyUI(fluidPage(
      ),
   mainPanel(
     tabsetPanel(
-      tabPanel('General',leafletOutput("general",height=800)),
+      tabPanel('General',
+               fluidRow(column(7,leafletOutput("general",height=700)),
+                        column(5,leafletOutput("density",height=700)))
+              ),
       tabPanel('Ranking',
-               textOutput("mapped")),
+              textOutput("mapped")
+               ),
       tabPanel('Map',
                htmlOutput("map")),
       tabPanel('Analysis',
