@@ -6,18 +6,18 @@ library(sp)
 library(rgdal)
 
 # Crime data
-crime15 <- read.csv("../output/crime15_nta.csv")
+crime15 <- read.csv("C:/Users/Administrator/Documents/GitHub/project2-group7/output/crime15_nta.csv")
 crime15 <- tbl_df(crime15)
 crime15$Occurren_3 <- crime15$Occurren_3 / 100 # occurrence hour
 crime15$Occurrence_Date <- unlist((lapply(strsplit(as.character(crime15$Occurrence), split = " "), "[[", 1)))
 crime15$Occurrence_Date <- as.Date(crime15$Occurrence_Date) # convert to Date class
 
 # NYC Neighborhood Tabulation Areas read as SpatialPolygonsDataFrame
-nynta <- readOGR(dsn = "../data/nynta_15d", layer = "nynta_projected") 
+nynta <- readOGR(dsn = "C:/Users/Administrator/Documents/GitHub/project2-group7/data/nynta_15d", layer = "nynta_projected") 
 nynta <- spTransform(nynta, CRS("+proj=longlat +datum=WGS84")) # transform lat/lng for leaflet
 
 # Population data per NTA read as .csv file
-pop_nta <- read.csv("../data/New_York_City_Population_by_Neighborhood_Tabulation_Areas.csv")
+pop_nta <- read.csv("C:/Users/Administrator/Documents/GitHub/project2-group7/data/New_York_City_Population_by_Neighborhood_Tabulation_Areas.csv")
 pop_nta <- filter(pop_nta, Year == 2010, Population >= 10000)
 
 shinyServer(function(input, output) {

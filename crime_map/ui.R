@@ -1,5 +1,4 @@
 library(shiny)
-setwd("C:/Users/Eve/Documents/crime_map")
 shinyUI(fluidPage(
    # titlePanel(h1("Crime Radar",align="center")),
   tags$head(

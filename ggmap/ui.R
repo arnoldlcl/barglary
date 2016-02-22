@@ -1,4 +1,3 @@
-setwd("C:/Users/Eve/Documents/crime_map/ggmap")
 library(shiny)
 
 shinyUI(fluidPage(
