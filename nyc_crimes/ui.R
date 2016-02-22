@@ -1,5 +1,10 @@
 # ui.R
 
+library(leaflet)
+library(dplyr)
+library(sp)
+library(rgdal)
+
 shinyUI(fluidPage(
   titlePanel("NYC Felony Incidents Jan - Sep 2015"),
   
