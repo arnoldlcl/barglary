@@ -9,7 +9,6 @@ library(sp)
 library(rgdal)
 library(R.utils)
 library(base)
-library(shiny)
 library(data.table)
 library(googleVis)
 library(ggplot2)
@@ -21,6 +20,7 @@ load("crime15.RData")
 load("nynta.RData")
 load("pop_nta.RData")
 load("nyc_bars_clean.RData")
+
 load("nynta_bar.RData")
 
 nyc_bars<-as.data.frame(nyc_bars)
@@ -30,7 +30,8 @@ nyc_bars$Actual.Add<-as.character(nyc_bars$Actual.Add)
 shinyServer(function(input, output) {
   
   barsnta<-reactive({filter(nyc_bars,nyc_bars$NTAName==toupper(input$nta))})
-  bar<-reactive({filter(nyc_bars,nyc_bars$Doing.Busi==toupper(input$bar))})
+  
+  a_bar<-reactive({ filter(nyc_bars,nyc_bars$Doing.Busi==toupper(input$bar))})
   
   
   # subsets the crime data depending on user input in the Shiny app
@@ -54,7 +55,8 @@ shinyServer(function(input, output) {
     nynta_crime <- cbind(nynta_crime, crime_density$crime_density_per_1K)
     names(nynta_crime)[8] <- "crime_density_per_1K"
     nynta_crime <- rbind(nynta_crime, nynta_crime_not)
-    nynta_crime <- nynta_crime[-grep("park-cemetery", nynta_crime@data$NTAName), ] # remove parks, cemeteries, etc.
+    nynta_crime <- nynta_crime[-grep("park-cemetery", nynta_crime@data$NTAName), ]
+    nynta_crime# remove parks, cemeteries, etc.
   })
   
   # defines color ramp for crime density
@@ -63,27 +65,58 @@ shinyServer(function(input, output) {
   })
   
   # draws the basic map
-  leafletInput <- reactive({
-    leaflet() %>% addProviderTiles("CartoDB.DarkMatter") %>%
-      setView(lat=40.69196, lng = -73.96483, zoom = 10)
-  })
+  leafletInput <- function(){
+    return( leaflet() %>% addProviderTiles("CartoDB.DarkMatter") %>%
+            setView(lat=40.69196, lng = -73.96483, zoom = 10) )
+  }
   
-  # adds colors (except if no offenses or days of the week are checked, then just display the basemap)
-  choroplethInput <- reactive({
-    if (is.null(input$offense) | is.null(input$day_of_week)) return(leafletInput()) 
-      leafletInput() %>% addPolygons(data = crimeInput(), weight = 2, fillOpacity = 0.7,
+#   # adds colors (except if no offenses or days of the week are checked, then just display the basemap)
+#   choroplethInput <- reactive({
+#     if (is.null(input$offense) | is.null(input$day_of_week)) return(leafletInput()) 
+#       leafletInput() %>% addPolygons(data = crimeInput(), weight = 2, fillOpacity = 0.7,
+#                                    color = ~colorInput()(crime_density_per_1K),
+#                                    popup = paste(crimeInput()$NTAName, 
+#                                                  round(crimeInput()$crime_density_per_1K, digits = 2), sep = " "))%>%
+#                           addMarkers(lng=barsnta()$Longitude,lat=barsnta()$Latitude,popup=barsnta()$Doing.Busi,clusterOptions = markerClusterOptions())%>%
+#                           addCircleMarkers(lng=bar()$Longitude,lat=bar()$Latitude,popup=bar()$Doing.Busi,radius=2)
+#     
+#   })
+  
+  # renders the map
+
+  output$general <- renderLeaflet({
+    
+     
+    if (is.null(input$offense) | is.null(input$day_of_week))   {
+              leafletInput()} else if ( (nrow(a_bar())==0) && (nrow(barsnta())==0) ) {
+              leafletInput()%>% addPolygons(data = crimeInput(), weight = 2, fillOpacity = 0.7,
+                                                                                   color = ~colorInput()(crime_density_per_1K),
+                                                                                   popup = paste(crimeInput()$NTAName, 
+                                                                                                 round(crimeInput()$crime_density_per_1K, digits = 2), sep = " "))
+    } else if ( nrow(a_bar())==0 ) {
+              leafletInput()%>% addPolygons(data = crimeInput(), weight = 2, fillOpacity = 0.7,
+                                                                color = ~colorInput()(crime_density_per_1K),
+                                                                popup = paste(crimeInput()$NTAName, 
+                                                                              round(crimeInput()$crime_density_per_1K, digits = 2), sep = " "))%>%
+                                addMarkers(lng=barsnta()$Longitude,lat=barsnta()$Latitude,popup=barsnta()$Doing.Busi,clusterOptions = markerClusterOptions())
+      } else if ( nrow(barsnta())==0 ) {
+              leafletInput()%>% addPolygons(data = crimeInput(), weight = 2, fillOpacity = 0.7,
+                                                                 color = ~colorInput()(crime_density_per_1K),
+                                                                 popup = paste(crimeInput()$NTAName, 
+                                                                               round(crimeInput()$crime_density_per_1K, digits = 2), sep = " "))%>%
+                                addCircleMarkers(lng=a_bar()$Longitude,lat=a_bar()$Latitude,popup=a_bar()$Doing.Busi,radius=2)
+      } else {
+          leafletInput() %>% addPolygons(data = crimeInput(), weight = 2, fillOpacity = 0.7,
                                    color = ~colorInput()(crime_density_per_1K),
                                    popup = paste(crimeInput()$NTAName, 
                                                  round(crimeInput()$crime_density_per_1K, digits = 2), sep = " "))%>%
-                          addMarkers(lng=barsnta()$Longitude,lat=barsnta()$Latitude,popup=barsnta()$Doing.Busi,clusterOptions = markerClusterOptions())%>%
-                          addCircleMarkers(lng=bar()$Longitude,lat=bar()$Latitude,popup=bar()$Doing.Busi,radius=2)
+                        addCircleMarkers(lng=a_bar()$Longitude,lat=a_bar()$Latitude,popup=a_bar()$Doing.Busi,radius=2)%>%
+                        addMarkers(lng=barsnta()$Longitude,lat=barsnta()$Latitude,popup=barsnta()$Doing.Busi,clusterOptions = markerClusterOptions())
+      }
     
-  })
   
-  # renders the map
-  output$map_guidelines <- renderText("Click on a neighborhood to view its name and crime density per 1000 people.")
-  output$general <- renderLeaflet({
-    choroplethInput()
+      
+    
   })
   
   # choropleth map of bar density per 1K, equal quantiles (7 divisions), superimposed onto street basemap
@@ -99,8 +132,10 @@ shinyServer(function(input, output) {
   
   output$map<- renderGvis({   
     #printgooglemap
-    thebar<-bar()
-    thebar$Actual.Add<-paste(thebar$Actual.Add,"New York, NY")
+    thebar<-a_bar()
+    if (nrow(thebar)==0) { return()} else{
+      thebar$Actual.Add<-paste(thebar$Actual.Add,"New York, NY")
+    
     gvisMap(thebar,"Actual.Add", c("Doing.Busi"), 
             options=list(showTip=TRUE, 
                          showLine=TRUE, 
@@ -108,5 +143,7 @@ shinyServer(function(input, output) {
                          mapType='normal', 
                          useMapTypeControl=TRUE))
 
+    }
+    
   })
 })
