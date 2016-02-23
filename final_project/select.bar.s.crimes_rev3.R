@@ -94,7 +94,7 @@ for(i in 1:row){
 crimesum=ddply(crimesum,~Bar,summarise,BURGLARY=sum(BURGLARY),GRAND_LARCENY=sum(GRAND_LARCENY),RAPE=sum(RAPE),FELONY_ASSAULT=sum(FELONY_ASSAULT),ROBBERY=sum(ROBBERY),GRAND_LARCENY_OF_MOTOR_VEHICLE=sum(GRAND_LARCENY_OF_MOTOR_VEHICLE),MURDER=sum(MURDER))
 crimesum$Bar=as.character.factor(crimesum$Bar)
 
-#"rank" is ranking the number of crime for each bar;"quan¡° is the quantile of the ranking
+#"rank" is ranking the number of crime for each bar;"quan" is the quantile of the ranking
 AllCrime=rank(rowSums (crimesum[2:8], na.rm = FALSE, dims = 1))
 BURGLARY=rank(crimesum[,2]);GRAND_LAR=rank(crimesum[,3]);RAPE=rank(crimesum[,4]);ASSAULT=rank(crimesum[,5]);ROBBERY=rank(crimesum[,6]);GRAND_LARC_MOTOR_VEHICLE=rank(crimesum[,7]);MURDER=rank(crimesum[,8])
 rank=cbind(AllCrime,BURGLARY,GRAND_LAR,RAPE,ASSAULT,ROBBERY,GRAND_LARC_MOTOR_VEHICLE,MURDER)  
