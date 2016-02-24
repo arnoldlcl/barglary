@@ -16,10 +16,10 @@ library(ggmap)
 library(RCurl)
 suppressPackageStartupMessages(library(googleVis));
 
-load("C:/Users/Administrator/Desktop/final_project/crime15.RData")
-load("C:/Users/Administrator/Desktop/final_project/nynta.RData")
-load("C:/Users/Administrator/Desktop/final_project/pop_nta.RData")
-load("C:/Users/Administrator/Desktop/final_project/nyc_bars.RData")
+load("crime15.RData")
+load("nynta.RData")
+load("pop_nta.RData")
+load("nyc_bars.RData")
 
 load("nynta_bar.RData")
 
@@ -131,7 +131,7 @@ shinyServer(function(input, output) {
   output$table1 = renderDataTable({
    barnt<-barsnta()
    if (nrow(barnt)==0) { return()} else{
-    nyc_bars[nyc_bars$NTAName==barnt$NTAName,][,c(1,8,9,10,11,12,13,14)]
+    nyc_bars[nyc_bars$NTAName==barnt$NTAName,][,c(1,8,9,10,11,12,13,14,16)]
   }},options = list(orderClasses = TRUE))
 
   
@@ -158,7 +158,7 @@ shinyServer(function(input, output) {
   output$pieplot <- renderPlot({
     thebar<-a_bar()
     if (nrow(thebar)==0) { return()} else{
-      per <- data.frame(t(nyc_bars[nyc_bars$Doing.Busi==thebar$Doing.Busi,][8:14]))
+      per <- data.frame(t(thebar[8:14]))
       CrimeType=rownames(per)
       pieplot<-ggplot(per, aes(x = "", y = per[,1], fill = CrimeType)) + geom_bar(width = 1,stat = "identity")
       pieplot + coord_polar(theta="y")+labs(title = "Pie plot for This Bar")+scale_fill_brewer(palette="Blues")
@@ -167,8 +167,15 @@ shinyServer(function(input, output) {
   output$barplot = renderPlot({
     thebar<-a_bar()
     if (nrow(thebar)==0) { return()} else{
-      rate<-data.frame(t(nyc_bars[nyc_bars$Doing.Busi=="LA VUE",][c(8,9,10,11,12,13,14,16)]))
-      ratetype=rownames(rate)=c("BURGLARY","GRAND_LARCENY","RAPE","FELONY_ASSAULT","ROBBERY","GRAND_VEHICLE","MURDER","CrimeRate")
+      BURGLARY=rank(nyc_bars[,8]);GRAND_LARCENY=rank(nyc_bars[,9]);RAPE=rank(nyc_bars[,10]);FELONY_ASSAULT=rank(nyc_bars[,11]);ROBBERY=rank(nyc_bars[,12]);
+      GRAND_VEHICLE=rank(nyc_bars[,13]);MURDER=rank(nyc_bars[,14]);CrimeRate=rank(nyc_bars[,16])
+      rank=cbind(BURGLARY,GRAND_LARCENY,RAPE,FELONY_ASSAULT,ROBBERY,GRAND_VEHICLE,MURDER,CrimeRate)/nrow(nyc_bars)
+      for(i in 1:nrow(rank)){
+        rank[i,]=round(rank[i,],2)
+      }
+      rank=data.frame(cbind(Doing.Busi=as.character(nyc_bars[,1]),rank))
+      rate<-data.frame(t(rank[rank$Doing.Busi==thebar$Doing.Busi,]))
+      ratetype=rownames(rate)
       barplot<-ggplot(rate, aes(x=factor(ratetype),y=rate[,1],fill = ratetype)) + geom_bar(stat = "identity",show.legend=F);barplot
       barplot+labs(title = "Barplot for The CrimeRate")+scale_fill_brewer(palette="Blues")+coord_flip()
     }},height = 350, width = 900)
