@@ -9,7 +9,7 @@ library(sp)
 library(rgdal)
 
 shinyUI(fluidPage(
-   # titlePanel(h1("Crime Radar",align="center")),
+   
   tags$head(
     tags$style(HTML("
                     @import url('//fonts.googleapis.com/css?family=Lobster|Cabin:400,700');
@@ -18,7 +18,7 @@ shinyUI(fluidPage(
   
   titlePanel(fluidRow(column(4,HTML("<style>h1{font-family: 'Lobster', cursive;
                 font-weight: 500; line-height: 1.1; 
-                  color: #4d3a7d;}</style><h1><img src='logo.png' width='100' height='100'>  Crime Radar</h1>")),
+                  color: #4d3a7d;}</style><h1><img src='logo.png' width='100' height='100'>  Barglary</h1>")),
                       column(8,h3("BREAKING NEWS: ", span(" One killed, two wounded in shooting near Penn Station, witnesses say dispute started in McDonald's known as a junkie hangout.", style = "font-weight: 300"), 
                                   style = "font-family: 'Arial Black';
                                   color: #fff; text-align: center;
@@ -79,15 +79,15 @@ shinyUI(fluidPage(
                fluidRow(column(1,plotOutput("pieplot")),
                         column(12,plotOutput("barplot")))
       ),
-      tabPanel('About Crime Radar', HTML("
+      tabPanel('About Barglary', HTML("
                                    <h4>
-                                     What is Crime Radar
+                                     What is Barglary
                                      </h4>
                                      <p>
-                                     This web application, developed in spring 2016 at Columbia University, is mainly for New Yorkers who want to have fun at a safe bar. Sometimes the most dangerous place is the safest. If you want to know whether the bar you are going to is in a safe area, just try Crime Radar!   
+                                     This web application, developed in spring 2016 at Columbia University, is mainly for New Yorkers who want to have fun at a safe bar. Sometimes the most dangerous place is the safest. If you want to know whether the bar you are going to is in a safe area, just try Barglary!   
                                      </p>
                                      <h4>
-                                     Hightlight of Crime Radar
+                                     Hightlight of Barglary
                                      </h4>
                                      <p>
                                      In general, the application is an HCI product developed in R studio with Shiny. The highlight of our app is that it can show the crime rate by different types of crime, by different occurence time and etc. 
