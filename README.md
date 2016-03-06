@@ -1,27 +1,15 @@
-# Project 2 Open Data NYC
-https://barglary.shinyapps.io/FINAL_project/
+https://arnoldlindlau.shinyapps.io/barglary 
 
-https://github.com/MarkEdmondson1234/shinyga
+## Barglary: Is Your Watering Hole Safe?
 
-https://github.com/imbenzene/healthrank/
+This is a data visualization app produced with RStudio's Shiny and with Leaflet. It has the following features: 
+- Interactive map of crime rates across each of NYC's neighborhoods, adjustable by type of crime, date and time of occurrence.  
+- Search for and rank all liquor-licensed establishments within a neighborhood by crime prevalence.  
+- Search for a specific bar and view the most prevalent types of crimes and a percentile rank for that bar compared to every other bar in NYC.  
+- View that specific bar on Google Maps.  
 
-https://crimeradar.shinyapps.io/final_project/
+This project was developed by Aoyuan Liao, Haoyang Chen, Rong Wang, Yanran Wang, and Arnold Lau (myself) for the Applied Data Science class offered Spring 2016 at Columbia University.  
 
-In this second project of W4249 Applied Data Science, we will carry out *Exploratory Data Analysis and Visualization* via a shiny app on a topic about open data released from the [New York City open data portal](https://nycopendata.socrata.com/). See [Project 2 Description](project2_desc.md) for more details.  
-
-The learning goals for this project is 
-- exploratory data analysis
-- visualization
-- shiny app
-- app production work flow
-
-This repo has been organized as follows.
-```
-proj/
-├── lib/
-├── data/
-├── doc/
-├── app/
-└── output/
-```
-![screenshot](doc/screenshot2.png)
+![General](doc/screenshot1.png?raw=true "General")
+![Rankings](doc/screenshot2.png?raw=true "Rankings")
+![Analysis](doc/screenshot3.png?raw=true "Analysis")
