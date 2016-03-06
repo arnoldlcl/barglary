@@ -24,8 +24,8 @@ shinyUI(fluidPage(
                                   color: #fff; text-align: center;
                                   background-image: url('texturebg.png');
                                   padding: 20px"))
-                      )
-            ),
+                      ),
+            windowTitle = "Barglary"),
 
   sidebarLayout(#position = "right",
   sidebarPanel(
