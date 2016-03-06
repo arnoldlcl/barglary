@@ -29,10 +29,10 @@ shinyUI(fluidPage(
 
   sidebarLayout(#position = "right",
   sidebarPanel(
-    tags$div(HTML("<strong><h4> Step 1:if you have no specific bar</h4> </strong>") ),                 
-    textInput("nta", HTML(" <h6>Input a neiborhood where you want to go</h6>"), "East Village"),
-    tags$div(HTML("<strong><h4> Step 2:if you want to check whether the bar is safe </h4> </strong>") ),
-    textInput("bar", HTML(" <h6>Input the bar's name</h6>"), "HARLEM TAVERN"),
+    tags$div(HTML("<strong><h4> If you have no specific bar in mind,</h4> </strong>") ),                 
+    textInput("nta", HTML(" <h6>Input a neighborhood where you want to go, then click the Rankings tab to see a list of all liquor-licensed establishments along with crime rates per 10,000 people based on a 100m distance buffer.</h6>"), "East Village"),
+    tags$div(HTML("<strong><h4> If you want to check whether a specific bar is safe </h4> </strong>") ),
+    textInput("bar", HTML(" <h6>Input the bar's name, then click the Analysis tab to view a chart of the proportion of each type of felony that has taken place within 100m of that bar, and its percentile ranking among every establishment in New York City.</h6>"), "HARLEM TAVERN"),
     
     
     helpText(HTML("<h6>Note: Rape offenses are geocoded as occurring in the precinct in which the incident was recorded.</h6>")),
