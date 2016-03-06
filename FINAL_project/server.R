@@ -161,7 +161,7 @@ shinyServer(function(input, output) {
       per <- data.frame(t(thebar[8:14]))
       CrimeType=rownames(per)
       pieplot<-ggplot(per, aes(x = "", y = per[,1], fill = CrimeType)) + geom_bar(width = 1,stat = "identity")
-      pieplot + coord_polar(theta="y")+labs(title = "Pie plot for This Bar")+scale_fill_brewer(palette="Blues")
+      pieplot + coord_polar(theta="y")+labs(title = paste("Pie plot for", thebar, sep = " "))+scale_fill_brewer(palette="Blues")
     }},height = 400, width = 1000 )
   
   output$barplot = renderPlot({
@@ -177,7 +177,7 @@ shinyServer(function(input, output) {
       rate<-data.frame(t(rank[rank$Doing.Busi==thebar$Doing.Busi,]))
       ratetype=rownames(rate)
       barplot<-ggplot(rate, aes(x=factor(ratetype),y=rate[,1],fill = ratetype)) + geom_bar(stat = "identity",show.legend=F);barplot
-      barplot+labs(title = "Barplot for The CrimeRate")+scale_fill_brewer(palette="Blues")+coord_flip()
+      barplot+labs(title = paste("Percentile Rank of", thebar, sep = " "))+scale_fill_brewer(palette="Blues")+coord_flip()
     }},height = 350, width = 900)
   
 })
