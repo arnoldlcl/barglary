@@ -68,8 +68,7 @@ shinyUI(fluidPage(
   mainPanel(
     tabsetPanel(
       tabPanel('General',
-               fluidRow(column(7,leafletOutput("general",height=700)),
-                        column(5,leafletOutput("density",height=700)))
+               fluidRow(column(10,leafletOutput("general",height=550)))
               ),
       tabPanel('Ranking',
                dataTableOutput("table1"),

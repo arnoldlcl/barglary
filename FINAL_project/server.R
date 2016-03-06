@@ -120,12 +120,12 @@ shinyServer(function(input, output) {
   })
   
   # choropleth map of bar density per 1K, equal quantiles (7 divisions), superimposed onto street basemap
-  output$density <- renderLeaflet({
-    pal_bar <- colorQuantile(palette = "Purples", domain = nynta_bar$bar_density_per_1K, n = 7)
-    leaflet() %>%setView(lat=40.69196, lng = -73.96483, zoom = 10)%>%
-              addProviderTiles("CartoDB.Positron") %>% 
-              addPolygons(data = nynta_bar, weight = 2, fillOpacity = 0.7, color = ~pal_bar(bar_density_per_1K))
-  })
+  #output$density <- renderLeaflet({
+  #  pal_bar <- colorQuantile(palette = "Purples", domain = nynta_bar$bar_density_per_1K, n = 7)
+  #  leaflet() %>%setView(lat=40.69196, lng = -73.96483, zoom = 10)%>%
+  #            addProviderTiles("CartoDB.Positron") %>% 
+  #            addPolygons(data = nynta_bar, weight = 2, fillOpacity = 0.7, color = ~pal_bar(bar_density_per_1K))
+  #})
   
   #Ranking
   output$table1 = renderDataTable({
